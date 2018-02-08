@@ -1,0 +1,23 @@
+{
+	"name": "xpress-framework/github-dashboard",
+	"type": "wordpress-plugin",
+	"license": "GPLv2",
+	"description": "Github API into a WordPress application.",
+	"homepage": "https://github.com/xpress-framework/wp-plugin-github-dashboard/",
+	"authors": [
+		{
+			"name": "Juan Manuel Arias",
+			"email": "trasgofurioso@gmail.com"
+		}
+	],
+	"keywords": [
+		"wordpress", "xpress", "mvc", "api", "github"
+	],
+	"support": {
+		"issues": "https://github.com/xpress-framework/wp-plugin-github-dashboard/issues"
+	},
+	"require": {
+		"xpress-framework/xpress-mvc": "0.2.*"
+	},
+	"minimum-stability": "dev"
+}
