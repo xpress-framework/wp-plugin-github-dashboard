@@ -17,3 +17,6 @@
  * @package    XPress
  * @subpackage MVC
  */
+
+// Require necessary classes.
+require_once 'models/github-project.php';
