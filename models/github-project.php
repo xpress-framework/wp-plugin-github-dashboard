@@ -80,7 +80,7 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 
 		$json = XPress_Github_Project_Model::make_request( $url );
 
-		$project = XPress_Github_Project_Model::new( $json );
+		$project = empty( $json ) ? null : XPress_Github_Project_Model::new( $json );
 
 		return $project;
 	}
@@ -97,7 +97,12 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 
 		$url = XPress_Github_Project_Model::construct_url( 'repos', $params['owner'], $params['repo'], 'projects' );
 
-		$json = XPress_Github_Project_Model::make_request( $url );
+		unset( $params['owner'] );
+		unset( $params['repo'] );
+
+		$json = XPress_Github_Project_Model::make_request( $url, array(
+			'body' => $params,
+		) );
 
 		foreach ( $json as $value ) {
 			$result[] = XPress_Github_Project_Model::new( $value );

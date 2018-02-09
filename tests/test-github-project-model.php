@@ -33,6 +33,20 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * No matching criteria should return empty array.
+	 */
+	function test_find_404() {
+		$projects = XPress_Github_Project_Model::find( array(
+			'owner' => 'xpress-framework',
+			'repo'  => 'wp-plugin-github-dashboard',
+			'state' => 'closed',
+		) );
+
+		$this->assertInternalType( 'array', $projects );
+		$this->assertCount( 0, $projects );
+	}
+
+	/**
 	 * Get a single project by id.
 	 */
 	function test_get() {
@@ -41,5 +55,12 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 		$this->assertInstanceOf( XPress_Github_Project_Model::class, $project );
 	}
 
+	/**
+	 * Id not found should return empty response.
+	 */
+	function test_get_404() {
+		$project = XPress_Github_Project_Model::get( 0 );
 
+		$this->assertEmpty( $project );
+	}
 }
