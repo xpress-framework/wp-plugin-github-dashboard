@@ -36,7 +36,7 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 	 * Get a single project by id.
 	 */
 	function test_get() {
-		$project = XPress_Github_Project_Model::get( 1002604 );
+		$project = XPress_Github_Project_Model::get( 1275863 );
 
 		$this->assertInstanceOf( XPress_Github_Project_Model::class, $project );
 	}
