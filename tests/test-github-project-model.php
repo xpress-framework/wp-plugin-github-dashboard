@@ -19,6 +19,7 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 
 	/**
 	 * Get a list of projects.
+	 * Projects should be XPress_Github_Project_Model instances.
 	 */
 	function test_find() {
 		$projects = XPress_Github_Project_Model::find( array(
@@ -30,6 +31,7 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 		$this->assertInternalType( 'array', $projects );
 		$this->assertCount( 1, $projects );
 		$this->assertInstanceOf( XPress_Github_Project_Model::class, $projects[0] );
+		// $this->assertEquals( 'owner', $projects[0] );
 	}
 
 	/**
@@ -62,5 +64,42 @@ class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 		$project = XPress_Github_Project_Model::get( 0 );
 
 		$this->assertEmpty( $project );
+	}
+
+	/**
+	 * Create a project should return the created project object.
+	 * Create a project should update the project instance with the values returned by the API.
+	 * Delete a project should return true/false.
+	 */
+	function test_create_delete_project() {
+		$project = XPress_Github_Project_Model::new( array(
+			'owner' => 'xpress-framework',
+			'repo'  => 'wp-plugin-github-dashboard',
+			'name'  => 'Dynamically Created',
+			'body'  => 'This is the body.',
+		) );
+
+		$saved_project = $project->save();
+
+		$this->assertInstanceOf( XPress_Github_Project_Model::class, $saved_project );
+		$this->assertEquals( 'Dynamically Created', $saved_project->name );
+		$this->assertEquals( 'This is the body.', $saved_project->body );
+
+		// Delete project successfully, return true.
+		$this->assertTrue( $project->delete() );
+		// Project does not exist anymore, return false.
+		$this->assertFalse( $project->delete() );
+	}
+
+	/**
+	 * Return false if project is invalid and don't save.
+	 */
+	function test_create_invalid_project() {
+		$project = XPress_Github_Project_Model::new( array(
+			'name'  => 'Dynamically Created',
+			'body'  => 'This is the body.',
+		) );
+
+		$this->assertFalse( $project->save() );
 	}
 }

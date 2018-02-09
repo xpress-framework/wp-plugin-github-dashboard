@@ -17,6 +17,16 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 * @var array
 	 */
 	static protected $schema = array(
+		'owner' => array(
+			'description' => 'Owner',
+			'type'        => 'string',
+			'required'    => true,
+		),
+		'repo' => array(
+			'description' => 'Repository',
+			'type'        => 'string',
+			'required'    => true,
+		),
 		'id' => array(
 			'description' => 'Id',
 			'type'        => 'number',
@@ -118,7 +128,29 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 *
 	 * @return XPress_Github_Model instance.
 	 */
-	public function save() {}
+	public function save() {
+		if ( $this->is_valid() ) {
+			$url = XPress_Github_Project_Model::construct_url( 'repos', $this->owner, $this->repo, 'projects' );
+			$json = XPress_Github_Project_Model::make_request( $url, array(
+				'method' => 'POST',
+				'body'   => json_encode( array(
+					'name' => $this->name,
+					'body' => $this->body,
+				) ),
+			) );
+
+			if ( empty( $json ) ) {
+				$project = null;
+			} else {
+				$this->update( $json );
+				$project = $this;
+			}
+		} else {
+			$project = false;
+		}
+
+		return $project;
+	}
 
 	/**
 	 * Deleted the current model instance.
@@ -127,7 +159,15 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 *
 	 * @return XPress_Github_Model instance.
 	 */
-	public function delete() {}
+	public function delete() {
+		$url = XPress_Github_Project_Model::construct_url( 'projects', $this->id );
+
+		$response = XPress_Github_Project_Model::make_request( $url, array(
+			'method' => 'DELETE',
+		) );
+
+		return false === $response ? false : true;
+	}
 
 	/**
 	 * Make a request to Github API.
@@ -145,7 +185,7 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 			'timeout'     => 10,
 			'body'        => null,
 			'headers'     => array(
-				'Authorization' => 'Basic ' . base64_encode( 'lavmeiker:42c2062ed7a78fd1b758b874cb5da55ef7d832c3' ),
+				'Authorization' => 'Basic ' . base64_encode( 'lavmeiker:86c6609a71dffb3c93d812f829a19984f4a0fe27' ),
 				'Accept'        => 'application/vnd.github.inertia-preview+json',
 				'Content-Type'  => 'application/json',
 			),
@@ -166,6 +206,8 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 		if ( $code >= 200 && $code < 300 ) {
 			$json = json_decode( $body, true );
 			return $json;
+		} else {
+			return false;
 		}
 	}
 
