@@ -86,11 +86,11 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 * @return XPress_Github_Model instance.
 	 */
 	static function get( $id ) {
-		$url = XPress_Github_Project_Model::construct_url( 'projects', $id );
+		$url = static::construct_url( 'projects', $id );
 
-		$json = XPress_Github_Project_Model::make_request( $url );
+		$json = static::make_request( $url );
 
-		$project = empty( $json ) ? null : XPress_Github_Project_Model::new( $json );
+		$project = empty( $json ) ? null : static::new( $json );
 
 		return $project;
 	}
@@ -105,17 +105,17 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	static function find( $params ) {
 		$result = array();
 
-		$url = XPress_Github_Project_Model::construct_url( 'repos', $params['owner'], $params['repo'], 'projects' );
+		$url = static::construct_url( 'repos', $params['owner'], $params['repo'], 'projects' );
 
 		unset( $params['owner'] );
 		unset( $params['repo'] );
 
-		$json = XPress_Github_Project_Model::make_request( $url, array(
+		$json = static::make_request( $url, array(
 			'body' => $params,
 		) );
 
 		foreach ( $json as $value ) {
-			$result[] = XPress_Github_Project_Model::new( $value );
+			$result[] = static::new( $value );
 		}
 
 		return $result;
@@ -130,8 +130,8 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 */
 	public function save() {
 		if ( $this->is_valid() ) {
-			$url = XPress_Github_Project_Model::construct_url( 'repos', $this->owner, $this->repo, 'projects' );
-			$json = XPress_Github_Project_Model::make_request( $url, array(
+			$url = static::construct_url( 'repos', $this->owner, $this->repo, 'projects' );
+			$json = static::make_request( $url, array(
 				'method' => 'POST',
 				'body'   => json_encode( array(
 					'name' => $this->name,
@@ -160,9 +160,9 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 	 * @return XPress_Github_Model instance.
 	 */
 	public function delete() {
-		$url = XPress_Github_Project_Model::construct_url( 'projects', $this->id );
+		$url = static::construct_url( 'projects', $this->id );
 
-		$response = XPress_Github_Project_Model::make_request( $url, array(
+		$response = static::make_request( $url, array(
 			'method' => 'DELETE',
 		) );
 
