@@ -185,7 +185,7 @@ class XPress_Github_Project_Model extends XPress_MVC_Model {
 			'timeout'     => 10,
 			'body'        => null,
 			'headers'     => array(
-				'Authorization' => 'Basic ' . base64_encode( 'lavmeiker:86c6609a71dffb3c93d812f829a19984f4a0fe27' ),
+				'Authorization' => 'Basic ' . base64_encode( GITHUB_AUTH_USER . ':' . GITHUB_AUTH_TOKEN ),
 				'Accept'        => 'application/vnd.github.inertia-preview+json',
 				'Content-Type'  => 'application/json',
 			),

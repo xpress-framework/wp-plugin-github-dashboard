@@ -11,6 +11,18 @@
 
 class XPress_Github_Project_Model_Test extends WP_UnitTestCase {
 	/**
+	 * Test suite setup.
+	 */
+	function setUp() {
+		if ( ! defined( 'GITHUB_AUTH_USER' ) ) {
+			define( 'GITHUB_AUTH_USER', getenv( 'GITHUB_AUTH_USER' ) );
+		}
+		if ( ! defined( 'GITHUB_AUTH_TOKEN' ) ) {
+			define( 'GITHUB_AUTH_TOKEN', getenv( 'GITHUB_AUTH_TOKEN' ) );
+		}
+	}
+
+	/**
 	 * Create an instance.
 	 */
 	function test_new_instance() {
