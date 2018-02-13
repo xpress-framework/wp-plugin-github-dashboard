@@ -20,3 +20,4 @@
 
 // Require necessary classes.
 require_once 'models/github-project.php';
+require_once 'models/github-column.php';
