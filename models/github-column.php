@@ -11,6 +11,13 @@
 
 class XPress_Github_Column_Model extends XPress_MVC_Model {
 	/**
+	 * Common methods for querying Github API.
+	 *
+	 * @since 0.1.0
+	 */
+	use XPress_Github_API_Wrapper;
+
+	/**
 	 * Model schema.
 	 *
 	 * @since 0.1.0
@@ -71,6 +78,21 @@ class XPress_Github_Column_Model extends XPress_MVC_Model {
 	 * @return array XPress_Github_Model instance collection.
 	 */
 	static function find( $params ) {
+		$result = array();
+
+		$url = static::construct_url( 'projects', $params['project_id'], 'columns' );
+
+		unset( $params['project_id'] );
+
+		$json = static::make_request( $url, array(
+			'body' => $params,
+		) );
+
+		foreach ( $json as $value ) {
+			$result[] = static::new( $value );
+		}
+
+		return $result;
 	}
 
 	/**
